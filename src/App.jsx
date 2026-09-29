@@ -568,6 +568,7 @@ function AppMain({ settings }) {
 
   const [people, setPeople] = useState([]);
   const [careCases, setCareCases] = useState([]);
+  const [showCareForm, setShowCareForm] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [view, setView] = useState("pray");
   const [order, setOrder] = useState("random");
@@ -1188,6 +1189,57 @@ function AppMain({ settings }) {
     <p style={{ color: C.muted, marginTop: 0, marginBottom: 24 }}>
       People currently needing care and follow-up.
     </p>
+    <button
+  onClick={() => setShowCareForm(true)}
+  style={{
+    background: C.accent,
+    color: "#fff",
+    border: "none",
+    borderRadius: 8,
+    padding: "11px 16px",
+    fontSize: 14,
+    fontWeight: 600,
+    cursor: "pointer",
+    marginBottom: 24
+  }}
+>
+  + Add Care Need
+</button>
+    {showCareForm && (
+  <div style={{
+    padding: 20,
+    marginBottom: 24,
+    border: "1px solid rgba(255,255,255,0.12)",
+    borderRadius: 12
+  }}>
+    <h3 style={{
+      color: C.cream,
+      marginTop: 0,
+      marginBottom: 20,
+      fontFamily: "Lora, Georgia, serif"
+    }}>
+      Add Care Need
+    </h3>
+
+    <p style={{ color: C.muted, marginBottom: 20 }}>
+      We'll add the care information here.
+    </p>
+
+    <button
+      onClick={() => setShowCareForm(false)}
+      style={{
+        background: "transparent",
+        color: C.muted,
+        border: "1px solid rgba(255,255,255,0.2)",
+        borderRadius: 8,
+        padding: "9px 14px",
+        cursor: "pointer"
+      }}
+    >
+      Cancel
+    </button>
+  </div>
+)}
 
     {careCases.length === 0 ? (
       <div style={{
