@@ -1178,9 +1178,36 @@ function AppMain({ settings }) {
           </div>
         </div>
       )}
+{/* ─── CARE DASHBOARD ─── */}
+{view === "pray" && (
+  <div style={{ padding: "24px 20px", maxWidth: 700, margin: "0 auto" }}>
+    <h2 style={{ color: C.cream, fontFamily: "Lora, Georgia, serif", marginBottom: 6 }}>
+      Care
+    </h2>
 
+    <p style={{ color: C.muted, marginTop: 0, marginBottom: 24 }}>
+      People currently needing care and follow-up.
+    </p>
+
+    {careCases.length === 0 ? (
+      <div style={{
+        padding: 24,
+        border: "1px solid rgba(255,255,255,0.12)",
+        borderRadius: 12,
+        textAlign: "center"
+      }}>
+        <p style={{ color: C.cream, margin: 0, fontSize: 17 }}>
+          No active care needs
+        </p>
+        <p style={{ color: C.muted, marginTop: 8, marginBottom: 0 }}>
+          New care needs will appear here.
+        </p>
+      </div>
+    ) : null}
+  </div>
+)}
       {/* ─── PRAY ─── */}
-      {view === "pray" && (
+      {false && view === "pray" && (
         <div style={S.prayWrap}>
           <div style={S.controls}>
             <div style={S.togglePill}>
