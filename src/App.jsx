@@ -1147,7 +1147,7 @@ function AppMain({ settings }) {
 
       {/* Tabs */}
       <nav style={S.tabs}>
-        {[["pray","Pray"],["week","Week"],["roster","Roster"]].map(([v, label]) => (
+        {[["pray","Care"],["week","This Week"],["roster","People"]].map(([v, label]) => (
           <button key={v} onClick={() => setView(v)} style={{ ...S.tab, ...(view === v ? S.tabActive : {}) }}>{label}</button>
         ))}
         {adminAuthed && [["people","People"],["report","Report"],["import","Import"]].map(([v, label]) => (
