@@ -567,6 +567,7 @@ function AppMain({ settings }) {
   const MINISTRY_SUB = settings.sub || "";
 
   const [people, setPeople] = useState([]);
+  const [careCases, setCareCases] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [view, setView] = useState("pray");
   const [order, setOrder] = useState("random");
