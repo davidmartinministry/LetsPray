@@ -595,6 +595,7 @@ const [careType, setCareType] = useState("Illness");
 const [careSituation, setCareSituation] = useState("");
 const [careCoordinator, setCareCoordinator] = useState("");
 const [careFollowUp, setCareFollowUp] = useState("");
+  const [careEventDate, setCareEventDate] = useState("");
 const [loaded, setLoaded] = useState(false);
   const [view, setView] = useState("pray");
   const [order, setOrder] = useState("random");
@@ -1153,10 +1154,12 @@ setCareCases(savedCareCases);
     situation: careSituation.trim(),
     coordinator: careCoordinator.trim(),
     followUp: careFollowUp,
+    eventDate: careEventDate,
     status: "Active",
     createdAt: Date.now(),
     history: []
   };
+    
 
   const updatedCareCases = [newCase, ...careCases];
 setCareCases(updatedCareCases);
@@ -1167,6 +1170,7 @@ apiSaveCareCases(updatedCareCases);
   setCareSituation("");
   setCareCoordinator("");
   setCareFollowUp("");
+  setCareEventDate("");
   setShowCareForm(false);
 }
 
@@ -1344,6 +1348,18 @@ apiSaveCareCases(updatedCareCases);
     style={S.modalInput}
   />
 
+  <div>
+  <label style={{ display: "block", color: C.muted, fontSize: 13 }}>
+    Event date
+  </label>
+  <input
+    type="date"
+    value={careEventDate}
+    onChange={e => setCareEventDate(e.target.value)}
+    style={{ ...S.modalInput, width: "100%", boxSizing: "border-box" }}
+  />
+</div>
+  
   <div>
     <label style={{ display: "block", color: C.muted, fontSize: 13, marginBottom: 6 }}>
       Next follow-up
