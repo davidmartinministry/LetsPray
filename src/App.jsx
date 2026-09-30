@@ -1120,6 +1120,29 @@ const [loaded, setLoaded] = useState(false);
       setAdminPwInput("");
     }
   }
+  function addCareCase() {
+  if (!careName.trim()) return;
+
+  const newCase = {
+    id: Date.now(),
+    name: careName.trim(),
+    type: careType,
+    situation: careSituation.trim(),
+    coordinator: careCoordinator.trim(),
+    followUp: careFollowUp,
+    status: "Active",
+    createdAt: Date.now()
+  };
+
+  setCareCases(prev => [newCase, ...prev]);
+
+  setCareName("");
+  setCareType("Illness");
+  setCareSituation("");
+  setCareCoordinator("");
+  setCareFollowUp("");
+  setShowCareForm(false);
+}
 
   if (!loaded) {
     return <div style={S.root}><p style={{ color: C.cream, fontFamily: "Lora, Georgia, serif", textAlign: "center", marginTop: 80, fontSize: 20 }}>Loading…</p></div>;
@@ -1281,6 +1304,21 @@ const [loaded, setLoaded] = useState(false);
 
 </div>
 
+    <button
+  onClick={addCareCase}
+  style={{
+    background: C.accent,
+    color: "#fff",
+    border: "none",
+    borderRadius: 8,
+    padding: "9px 14px",
+    fontWeight: 600,
+    cursor: "pointer",
+    marginRight: 8
+  }}
+>
+  Save Care Need
+</button>
     <button
       onClick={() => setShowCareForm(false)}
       style={{
