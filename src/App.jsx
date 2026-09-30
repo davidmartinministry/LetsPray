@@ -586,6 +586,9 @@ function AppMain({ settings }) {
   const [people, setPeople] = useState([]);
   const [careCases, setCareCases] = useState([]);
   const [selectedCareId, setSelectedCareId] = useState(null);
+  const [updateType, setUpdateType] = useState("Call");
+const [updateNote, setUpdateNote] = useState("");
+const [updateFollowUp, setUpdateFollowUp] = useState("");
   const [showCareForm, setShowCareForm] = useState(false);
 const [careName, setCareName] = useState("");
 const [careType, setCareType] = useState("Illness");
@@ -1151,7 +1154,8 @@ setCareCases(savedCareCases);
     coordinator: careCoordinator.trim(),
     followUp: careFollowUp,
     status: "Active",
-    createdAt: Date.now()
+    createdAt: Date.now(),
+    history: []
   };
 
   const updatedCareCases = [newCase, ...careCases];
@@ -1164,6 +1168,34 @@ apiSaveCareCases(updatedCareCases);
   setCareCoordinator("");
   setCareFollowUp("");
   setShowCareForm(false);
+}
+
+  function addCareUpdate() {
+  if (!selectedCareId || !updateNote.trim()) return;
+
+  const updatedCareCases = careCases.map(care => {
+    if (care.id !== selectedCareId) return care;
+
+    const newUpdate = {
+      id: Date.now(),
+      type: updateType,
+      note: updateNote.trim(),
+      date: Date.now()
+    };
+
+    return {
+      ...care,
+      followUp: updateFollowUp || care.followUp,
+      history: [newUpdate, ...(care.history || [])]
+    };
+  });
+
+  setCareCases(updatedCareCases);
+  apiSaveCareCases(updatedCareCases);
+
+  setUpdateType("Call");
+  setUpdateNote("");
+  setUpdateFollowUp("");
 }
 
   if (!loaded) {
@@ -1700,14 +1732,84 @@ apiSaveCareCases(updatedCareCases);
               Care History
             </h3>
 
-            <div style={{
-              padding: 20,
+{(() => {
+  const selectedCare = careCases.find(care => care.id === selectedCareId);
+  const history = selectedCare?.history || [];
+
+  return (
+    <>
+      <div style={{
+        padding: 20,
+        border: "1px solid rgba(255,255,255,0.12)",
+        borderRadius: 12,
+        marginBottom: 16
+      }}>
+        <select
+          value={updateType}
+          onChange={e => setUpdateType(e.target.value)}
+          style={{ width: "100%", padding: 10, marginBottom: 10 }}
+        >
+          <option>Call</option>
+          <option>Text</option>
+          <option>Hospital Visit</option>
+          <option>Home Visit</option>
+          <option>Meal / Help</option>
+          <option>Prayer</option>
+          <option>Other</option>
+        </select>
+
+        <textarea
+          value={updateNote}
+          onChange={e => setUpdateNote(e.target.value)}
+          placeholder="What happened?"
+          style={{ width: "100%", padding: 10, marginBottom: 10 }}
+        />
+
+        <input
+          type="date"
+          value={updateFollowUp}
+          onChange={e => setUpdateFollowUp(e.target.value)}
+          style={{ width: "100%", padding: 10, marginBottom: 10 }}
+        />
+
+        <button onClick={addCareUpdate}>
+          Add Care Update
+        </button>
+      </div>
+
+      {history.length === 0 ? (
+        <div style={{
+          padding: 20,
+          border: "1px solid rgba(255,255,255,0.12)",
+          borderRadius: 12,
+          color: C.muted
+        }}>
+          No care updates have been recorded yet.
+        </div>
+      ) : (
+        history.map(update => (
+          <div
+            key={update.id}
+            style={{
+              padding: 16,
               border: "1px solid rgba(255,255,255,0.12)",
               borderRadius: 12,
-              color: C.muted
-            }}>
-              No care updates have been recorded yet.
+              marginBottom: 10
+            }}
+          >
+            <strong style={{ color: C.cream }}>{update.type}</strong>
+            <div style={{ color: C.muted, marginTop: 6 }}>
+              {update.note}
             </div>
+            <div style={{ color: C.muted, marginTop: 6, fontSize: 12 }}>
+              {new Date(update.date).toLocaleString()}
+            </div>
+          </div>
+        ))
+      )}
+    </>
+  );
+})()}       
           </div>
         );
       })()}
