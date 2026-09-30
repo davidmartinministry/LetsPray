@@ -1349,7 +1349,39 @@ const [loaded, setLoaded] = useState(false);
           New care needs will appear here.
         </p>
       </div>
-    ) : null}
+    ) : <div>
+  {careCases.map(care => (
+    <div
+      key={care.id}
+      style={{
+        padding: 20,
+        marginBottom: 16,
+        border: "1px solid rgba(255,255,255,0.12)",
+        borderRadius: 12
+      }}
+    >
+      <h3 style={{ color: C.cream, marginTop: 0, marginBottom: 6 }}>
+        {care.name}
+      </h3>
+
+      <p style={{ color: C.accent, margin: "0 0 12px 0", fontWeight: 600 }}>
+        {care.type}
+      </p>
+
+      <p style={{ color: C.cream, margin: "0 0 16px 0" }}>
+        {care.situation}
+      </p>
+
+      <p style={{ color: C.muted, margin: "4px 0" }}>
+        <strong>Coordinator:</strong> {care.coordinator || "Unassigned"}
+      </p>
+
+      <p style={{ color: C.muted, margin: "4px 0" }}>
+        <strong>Next follow-up:</strong> {care.followUp || "Not scheduled"}
+      </p>
+    </div>
+  ))}
+</div>}
   </div>
 )}
       {/* ─── PRAY ─── */}
