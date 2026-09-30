@@ -569,16 +569,12 @@ function AppMain({ settings }) {
   const [people, setPeople] = useState([]);
   const [careCases, setCareCases] = useState([]);
   const [showCareForm, setShowCareForm] = useState(false);
-  const [people, setPeople] = useState([]);
-const [careCases, setCareCases] = useState([]);
-const [showCareForm, setShowCareForm] = useState(false);
 const [careName, setCareName] = useState("");
 const [careType, setCareType] = useState("Illness");
 const [careSituation, setCareSituation] = useState("");
 const [careCoordinator, setCareCoordinator] = useState("");
 const [careFollowUp, setCareFollowUp] = useState("");
 const [loaded, setLoaded] = useState(false);
-  const [loaded, setLoaded] = useState(false);
   const [view, setView] = useState("pray");
   const [order, setOrder] = useState("random");
   const [filter, setFilter] = useState("all");
