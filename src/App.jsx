@@ -1628,90 +1628,57 @@ apiSaveCareCases(updatedCareCases);
         </div>
       )}
 
-      {/* ─── WEEK SUMMARY ─── */}
-      {view === "week" && (
-        <div style={S.weekWrap}>
-          <h2 style={S.weekTitle}>This Week</h2>
+{/* ─── THIS WEEK ─── */}
+{view === "week" && (
+  <div style={S.weekWrap}>
+    <h2 style={S.weekTitle}>This Week</h2>
 
-          {upcomingBdays.length > 0 && (
-            <div style={S.weekSection}>
-              <div style={S.sectionHead}>
-                <Cake size={13} color={C.accent} style={{ marginRight: 7 }} />
-                <span style={S.sectionTitle}>Upcoming Birthdays</span>
-              </div>
-              {upcomingBdays.map(({ person, diff, date }) => (
-                <div key={person.id} onClick={() => goToPerson(person.id)} style={{ ...S.weekRow, ...(diff === 0 ? { background: C.faint } : {}), cursor: "pointer" }}>
-                  <div>
-                    <div style={S.weekName}>{person.name}</div>
-                    <div style={{ ...S.weekMeta, display:"flex", alignItems:"center", gap:4 }}>{diff === 0 && <Cake size={11} color={C.accent} />}{diff === 0 ? "Today!" : diff === 1 ? "Tomorrow" : date.toLocaleDateString("en-US", { month: "short", day: "numeric" })}</div>
-                  </div>
-                  <div style={{ display: "flex", gap: 4 }}>
-                    {person.group && <span style={{ ...S.badgeSm, ...(person.group === "hs" ? S.hsBadgeSm : S.msBadgeSm) }}>{person.group.toUpperCase()}</span>}
-                    <span style={{ ...S.badgeSm, ...(person.type === "leader" ? S.leaderBadgeSm : S.studentBadgeSm) }}>{person.type}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-{streak > 0 && (
-            <div style={{ display:"flex", alignItems:"center", gap:10, padding:"12px 16px", background:C.accentBg, border:`1px solid ${C.accent}44`, borderRadius:12 }}>
-              <svg width="18" height="18" viewBox="0 0 20 20" style={{ flexShrink:0 }}><path d="M10,2 L11.768,8.232 L18,10 L11.768,11.768 L10,18 L8.232,11.768 L2,10 L8.232,8.232 Z" fill="#6b9e78" /></svg>
-              <div style={{ display:"flex", flexDirection:"column", gap:2 }}>
-                <span style={{ fontSize:10, color:C.accent, fontWeight:600, textTransform:"uppercase", letterSpacing:"0.08em", fontFamily:"'Inter', system-ui, sans-serif" }}>Prayer Streak</span>
-                <span style={{ fontSize:14, color:C.cream, fontFamily:"'Lora', Georgia, serif", lineHeight:1.3 }}>
-                  {streak} week{streak !== 1 ? "s" : ""} in a row — everyone prayed for
-                </span>
-              </div>
-            </div>
-          )}
+    <div style={S.weekSection}>
+      <div style={S.sectionHead}>
+        <span style={S.sectionTitle}>
+          Follow-ups Due
+        </span>
+      </div>
 
-          <div style={S.weekSection}>
-            <div style={S.sectionHead}>
-              <Heart size={13} fill={C.prayedGreen} color={C.prayedGreen} style={{ marginRight: 7 }} />
-              <span style={S.sectionTitle}>Prayed For — {prayedThis.length}</span>
-            </div>
-            {prayedThis.length === 0
-              ? <p style={S.weekEmpty}>No one marked yet this week.</p>
-              : prayedThis.map(p => (
-                <div key={p.id} onClick={() => goToPerson(p.id)} style={{ ...S.weekRow, cursor: "pointer" }}>
-                  <div>
-                    <div style={{ ...S.weekName, display:"flex", alignItems:"center", gap:6 }}>{p.name}{(p.weekPrayCount || 0) >= 2 ? <span style={{ fontSize:11, color:C.accent, fontWeight:700, background:C.faint, padding:"1px 6px", borderRadius:8 }}>x{p.weekPrayCount}</span> : null}</div>
-                    <div style={S.weekMeta}>{timeAgo(p.prayedAt)}</div>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    {(p.prayerRequests || []).length > 0 && <span style={S.reqCountBadge}>{p.prayerRequests.length} req</span>}
-                    <span style={{ color: C.prayedGreen, fontSize: 18 }}>✓</span>
-                  </div>
-                </div>
-              ))
-            }
-          </div>
+      {careCases.filter(care => care.followUp).length === 0 ? (
+        <p style={S.weekEmpty}>No follow-ups scheduled.</p>
+      ) : (
+        careCases
+          .filter(care => care.followUp)
+          .sort((a, b) => a.followUp.localeCompare(b.followUp))
+          .map(care => (
+            <div
+              key={care.id}
+              style={{
+                padding: "14px 16px",
+                borderTop: "1px solid rgba(255,255,255,0.08)"
+              }}
+            >
+              <div style={{ color: C.cream, fontWeight: 600, fontSize: 16 }}>
+                {care.name}
+              </div>
 
-          <div style={S.weekSection}>
-            <div style={S.sectionHead}>
-              <div style={{ width: 13, height: 13, borderRadius: "50%", border: `1.5px solid ${C.muted}`, marginRight: 7, flexShrink: 0 }} />
-              <span style={S.sectionTitle}>Still Waiting — {notPrayedThis.length}</span>
+              <div style={{ color: C.accent, fontSize: 12, marginTop: 4 }}>
+                {care.type}
+              </div>
+
+              <div style={{ color: C.cream, marginTop: 8 }}>
+                {care.situation}
+              </div>
+
+              <div style={{ color: C.muted, fontSize: 13, marginTop: 8 }}>
+                <strong>Coordinator:</strong> {care.coordinator || "Unassigned"}
+              </div>
+
+              <div style={{ color: C.muted, fontSize: 13, marginTop: 3 }}>
+                <strong>Follow up:</strong> {care.followUp}
+              </div>
             </div>
-            {notPrayedThis.length === 0 ? (
-              <div style={S.allPrayedBanner}>
-                <Heart size={22} fill={C.accent} color={C.accent} />
-                <span style={S.allPrayedText}>Everyone prayed for this week!</span>
-              </div>
-            ) : notPrayedThis.map(p => (
-              <div key={p.id} onClick={() => goToPerson(p.id)} style={{ ...S.weekRow, cursor: "pointer" }}>
-                <div>
-                  <div style={{ ...S.weekName, color: C.muted }}>{p.name}</div>
-                  {p.prayedAt && <div style={S.weekMeta}>Last: {timeAgo(p.prayedAt)}</div>}
-                </div>
-                <div style={{ display: "flex", gap: 4 }}>
-                  {p.group && <span style={{ ...S.badgeSm, ...(p.group === "hs" ? S.hsBadgeSm : S.msBadgeSm) }}>{p.group.toUpperCase()}</span>}
-                  <span style={{ ...S.badgeSm, ...(p.type === "leader" ? S.leaderBadgeSm : S.studentBadgeSm) }}>{p.type}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+          ))
       )}
+    </div>
+  </div>
+)}
 
       {/* ─── PEOPLE ─── */}
       {view === "people" && (
