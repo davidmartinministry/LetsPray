@@ -585,6 +585,7 @@ function AppMain({ settings }) {
 
   const [people, setPeople] = useState([]);
   const [careCases, setCareCases] = useState([]);
+  const [selectedCareId, setSelectedCareId] = useState(null);
   const [showCareForm, setShowCareForm] = useState(false);
 const [careName, setCareName] = useState("");
 const [careType, setCareType] = useState("Illness");
@@ -1229,7 +1230,7 @@ apiSaveCareCases(updatedCareCases);
         </div>
       )}
 {/* ─── CARE DASHBOARD ─── */}
-{view === "pray" && (
+{view === "pray" && !selectedCareId && (
   <div style={{ padding: "24px 20px", maxWidth: 700, margin: "0 auto" }}>
     <h2 style={{ color: C.cream, fontFamily: "Lora, Georgia, serif", marginBottom: 6 }}>
       Care
@@ -1374,6 +1375,7 @@ apiSaveCareCases(updatedCareCases);
   {careCases.map(care => (
     <div
       key={care.id}
+      onClick={() => setSelectedCareId(care.id)}
       style={{
         padding: 20,
         marginBottom: 16,
@@ -1627,6 +1629,89 @@ apiSaveCareCases(updatedCareCases);
           ) : null}
         </div>
       )}
+            {/* ─── CARE DETAILS ─── */}
+      {view === "pray" && selectedCareId && (() => {
+        const care = careCases.find(c => c.id === selectedCareId);
+
+        if (!care) return null;
+
+        return (
+          <div style={{ padding: "24px 20px", maxWidth: 700, margin: "0 auto" }}>
+            <button
+              onClick={() => setSelectedCareId(null)}
+              style={{
+                background: "none",
+                border: "none",
+                color: C.accent,
+                padding: 0,
+                marginBottom: 24,
+                fontSize: 14,
+                cursor: "pointer"
+              }}
+            >
+              ← Back to Care
+            </button>
+
+            <h2 style={{
+              color: C.cream,
+              fontFamily: "'Lora', Georgia, serif",
+              marginBottom: 4
+            }}>
+              {care.name}
+            </h2>
+
+            <div style={{
+              color: C.accent,
+              fontSize: 14,
+              fontWeight: 600,
+              marginBottom: 20
+            }}>
+              {care.type}
+            </div>
+
+            <div style={{
+              padding: 20,
+              border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: 12,
+              marginBottom: 20
+            }}>
+              <div style={{ color: C.cream, fontSize: 16, marginBottom: 16 }}>
+                {care.situation}
+              </div>
+
+              <div style={{ color: C.muted, fontSize: 14, marginBottom: 6 }}>
+                <strong>Coordinator:</strong> {care.coordinator || "Unassigned"}
+              </div>
+
+              <div style={{ color: C.muted, fontSize: 14, marginBottom: 6 }}>
+                <strong>Next follow-up:</strong> {care.followUp || "Not scheduled"}
+              </div>
+
+              <div style={{ color: C.muted, fontSize: 14 }}>
+                <strong>Status:</strong> {care.status || "Active"}
+              </div>
+            </div>
+
+            <h3 style={{
+              color: C.cream,
+              fontFamily: "'Lora', Georgia, serif",
+              marginBottom: 10
+            }}>
+              Care History
+            </h3>
+
+            <div style={{
+              padding: 20,
+              border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: 12,
+              color: C.muted
+            }}>
+              No care updates have been recorded yet.
+            </div>
+          </div>
+        );
+      })()}
+
 
 {/* ─── THIS WEEK ─── */}
 {view === "week" && (
