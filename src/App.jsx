@@ -569,6 +569,15 @@ function AppMain({ settings }) {
   const [people, setPeople] = useState([]);
   const [careCases, setCareCases] = useState([]);
   const [showCareForm, setShowCareForm] = useState(false);
+  const [people, setPeople] = useState([]);
+const [careCases, setCareCases] = useState([]);
+const [showCareForm, setShowCareForm] = useState(false);
+const [careName, setCareName] = useState("");
+const [careType, setCareType] = useState("Illness");
+const [careSituation, setCareSituation] = useState("");
+const [careCoordinator, setCareCoordinator] = useState("");
+const [careFollowUp, setCareFollowUp] = useState("");
+const [loaded, setLoaded] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [view, setView] = useState("pray");
   const [order, setOrder] = useState("random");
@@ -1221,9 +1230,60 @@ function AppMain({ settings }) {
       Add Care Need
     </h3>
 
-    <p style={{ color: C.muted, marginBottom: 20 }}>
-      We'll add the care information here.
-    </p>
+<div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 20 }}>
+
+  <input
+    type="text"
+    placeholder="Person's name"
+    value={careName}
+    onChange={e => setCareName(e.target.value)}
+    style={S.modalInput}
+  />
+
+  <select
+    value={careType}
+    onChange={e => setCareType(e.target.value)}
+    style={S.modalInput}
+  >
+    <option value="Illness">Illness</option>
+    <option value="Hospitalization/Surgery">Hospitalization / Surgery</option>
+    <option value="Death/Grief">Death / Grief</option>
+    <option value="Marriage/Divorce">Marriage / Divorce</option>
+    <option value="Job/Financial">Job / Financial</option>
+    <option value="Birth/New Baby">Birth / New Baby</option>
+    <option value="Family Crisis">Family Crisis</option>
+    <option value="Other">Other</option>
+  </select>
+
+  <textarea
+    placeholder="Brief description of the care need"
+    value={careSituation}
+    onChange={e => setCareSituation(e.target.value)}
+    rows={4}
+    style={{ ...S.modalInput, resize: "vertical" }}
+  />
+
+  <input
+    type="text"
+    placeholder="Care coordinator"
+    value={careCoordinator}
+    onChange={e => setCareCoordinator(e.target.value)}
+    style={S.modalInput}
+  />
+
+  <div>
+    <label style={{ display: "block", color: C.muted, fontSize: 13, marginBottom: 6 }}>
+      Next follow-up
+    </label>
+    <input
+      type="date"
+      value={careFollowUp}
+      onChange={e => setCareFollowUp(e.target.value)}
+      style={{ ...S.modalInput, width: "100%", boxSizing: "border-box" }}
+    />
+  </div>
+
+</div>
 
     <button
       onClick={() => setShowCareForm(false)}
