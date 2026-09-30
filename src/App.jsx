@@ -60,7 +60,24 @@ async function apiSaveSettings(settings) {
     body: JSON.stringify(settings),
   });
 }
+async function apiLoadCareCases() {
+  try {
+    const res = await fetch("/api/data?key=care-cases");
+    if (!res.ok) return [];
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
+  } catch (_e) {
+    return [];
+  }
+}
 
+async function apiSaveCareCases(careCases) {
+  await fetch("/api/data?key=care-cases", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(careCases),
+  });
+}
 async function apiLoad() {
   const res = await fetch("/api/data");
   if (!res.ok) throw new Error("load failed");
@@ -679,6 +696,8 @@ const [loaded, setLoaded] = useState(false);
         } else {
           setWeekHistory(history);
         }
+        const savedCareCases = await apiLoadCareCases();
+setCareCases(savedCareCases);
         setLoaded(true);
       } catch {
         setTimeout(async () => {
@@ -1134,7 +1153,9 @@ const [loaded, setLoaded] = useState(false);
     createdAt: Date.now()
   };
 
-  setCareCases(prev => [newCase, ...prev]);
+  const updatedCareCases = [newCase, ...careCases];
+setCareCases(updatedCareCases);
+apiSaveCareCases(updatedCareCases);
 
   setCareName("");
   setCareType("Illness");
