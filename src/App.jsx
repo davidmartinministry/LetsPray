@@ -2212,7 +2212,11 @@ apiSaveCareCases(updatedCareCases);
               .map(p => {
                 const bdayFmt = p.birthday ? (() => { const [m, d] = p.birthday.split("-"); const date = new Date(2000, parseInt(m)-1, parseInt(d)); return date.toLocaleDateString("en-US", { month:"short", day:"numeric" }); })() : null;
                 return (
-                  <div key={p.id} style={{ display:"flex", alignItems:"center", padding:"11px 14px", background:C.surface, borderRadius:8, gap:12 }}>
+                <div
+  key={p.id}
+  onClick={() => setSelectedCareId(careCases.find(care => care.name === p.name)?.id || null)}
+  style={{ display:"flex", alignItems:"center", padding:"11px 14px", background:C.surface, borderRadius:8, gap:12, cursor:"pointer" }}
+>
                     {/* Photo */}
 
                     {/* Text — left aligned below name */}
