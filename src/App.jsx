@@ -586,6 +586,7 @@ function AppMain({ settings }) {
   const [people, setPeople] = useState([]);
   const [careCases, setCareCases] = useState([]);
   const [selectedCareId, setSelectedCareId] = useState(null);
+  const [selectedPersonName, setSelectedPersonName] = useState(null);
   const [updateType, setUpdateType] = useState("Call");
 const [updateNote, setUpdateNote] = useState("");
 const [updateFollowUp, setUpdateFollowUp] = useState("");
@@ -1281,6 +1282,108 @@ apiSaveCareCases(updatedCareCases);
           </div>
         </div>
       )}
+      {/* — PERSON DETAIL — */}
+{view === "roster" && selectedPersonName && (() => {
+  const personCases = careCases.filter(care => care.name === selectedPersonName);
+  const activeCases = personCases.filter(care => care.status !== "Closed");
+  const closedCases = personCases.filter(care => care.status === "Closed");
+
+  const renderCareCase = (care) => (
+    <div
+      key={care.id}
+      onClick={() => {
+        setSelectedCareId(care.id);
+        setSelectedPersonName(null);
+        setView("pray");
+      }}
+      style={{
+        padding: 16,
+        background: C.surface,
+        borderRadius: 10,
+        marginBottom: 8,
+        cursor: "pointer"
+      }}
+    >
+      <div style={{ color: C.accent, fontSize: 13, fontWeight: 600, marginBottom: 4 }}>
+        {care.type}
+      </div>
+
+      <div style={{ color: C.cream, fontSize: 15, marginBottom: 6 }}>
+        {care.situation}
+      </div>
+
+      <div style={{ color: C.muted, fontSize: 13 }}>
+        {care.status || "Active"}
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{ padding: "24px 20px", maxWidth: 700, margin: "0 auto" }}>
+      <button
+        onClick={() => setSelectedPersonName(null)}
+        style={{
+          background: "none",
+          border: "none",
+          color: C.accent,
+          padding: 0,
+          marginBottom: 28,
+          fontSize: 14,
+          cursor: "pointer"
+        }}
+      >
+        ← Back to People
+      </button>
+
+      <h2 style={{
+        color: C.cream,
+        fontFamily: "'Lora', Georgia, serif",
+        marginBottom: 24
+      }}>
+        {selectedPersonName}
+      </h2>
+
+      {activeCases.length > 0 && (
+        <>
+          <div style={{
+            color: C.accent,
+            fontSize: 12,
+            fontWeight: 700,
+            letterSpacing: 1,
+            marginBottom: 10
+          }}>
+            ACTIVE CARE
+          </div>
+
+          {activeCases.map(renderCareCase)}
+        </>
+      )}
+
+      {closedCases.length > 0 && (
+        <>
+          <div style={{
+            color: C.muted,
+            fontSize: 12,
+            fontWeight: 700,
+            letterSpacing: 1,
+            marginTop: activeCases.length ? 28 : 0,
+            marginBottom: 10
+          }}>
+            PAST CARE
+          </div>
+
+          {closedCases.map(renderCareCase)}
+        </>
+      )}
+
+      {personCases.length === 0 && (
+        <div style={{ color: C.muted }}>
+          No care history has been recorded.
+        </div>
+      )}
+    </div>
+  );
+})()}
 {/* ─── CARE DASHBOARD ─── */}
 {view === "pray" && !selectedCareId && (
   <div style={{ padding: "24px 20px", maxWidth: 700, margin: "0 auto" }}>
@@ -2196,7 +2299,7 @@ apiSaveCareCases(updatedCareCases);
 
 
       {/* ─── ROSTER ─── */}
-      {view === "roster" && (
+     {view === "roster" && !selectedPersonName && (
         <div style={S.importWrap}>
          
 
@@ -2235,12 +2338,8 @@ const closedCareCases = personCareCases.filter(care => care.status === "Closed")
                 return (
                 <div
   key={p.id}
-  onClick={() => {
-  const care = careCases.find(care => care.name === p.name);
-  if (care) {
-    setSelectedCareId(care.id);
-    setView("pray");
-  }
+ onClick={() => {
+  setSelectedPersonName(p.name);
 }}
   style={{ display:"flex", alignItems:"center", padding:"11px 14px", background:C.surface, borderRadius:8, gap:12, cursor:"pointer" }}
 >
