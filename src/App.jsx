@@ -1562,9 +1562,21 @@ apiSaveCareCases(updatedCareCases);
         {care.situation}
       </p>
 
-      <p style={{ color: C.muted, margin: "4px 0" }}>
-        <strong>Coordinator:</strong> {care.coordinator || "Unassigned"}
-      </p>
+     <p style={{ color: C.muted, margin: "4px 0" }}>
+  <strong>Coordinator:</strong>{" "}
+  {care.coordinator ? (
+    care.coordinator
+  ) : (
+    <span style={{
+      color: C.accent,
+      fontWeight: 700,
+      textTransform: "uppercase",
+      letterSpacing: 0.5
+    }}>
+      Unassigned
+    </span>
+  )}
+</p>
 
       <p style={{ color: C.muted, margin: "4px 0" }}>
         <strong>Next follow-up:</strong> {care.followUp || "Not scheduled"}
