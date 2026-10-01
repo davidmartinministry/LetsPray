@@ -1177,7 +1177,7 @@ apiSaveCareCases(updatedCareCases);
 }
 
   function addCareUpdate() {
-  if (!selectedCareId || !updateNote.trim()) return;
+  if (!selectedCareId || !updateNote.trim() || !currentUser) return;
 
   const updatedCareCases = careCases.map(care => {
     if (care.id !== selectedCareId) return care;
@@ -1186,7 +1186,8 @@ apiSaveCareCases(updatedCareCases);
       id: Date.now(),
       type: updateType,
       note: updateNote.trim(),
-      date: Date.now()
+     date: Date.now(),
+by: currentUser || "Unknown"
     };
 
     return {
@@ -2100,9 +2101,10 @@ apiSaveCareCases(updatedCareCases);
             <div style={{ color: C.muted, marginTop: 6 }}>
               {update.note}
             </div>
-            <div style={{ color: C.muted, marginTop: 6, fontSize: 12 }}>
-              {new Date(update.date).toLocaleString()}
-            </div>
+           <div style={{ color: C.muted, marginTop: 6, fontSize: 12 }}>
+  {new Date(update.date).toLocaleString()}
+  {update.by && <> · {update.by}</>}
+</div>
           </div>
         ))
       )}
