@@ -1410,6 +1410,49 @@ apiSaveCareCases(updatedCareCases);
 >
   + Add Care Need
 </button>
+    {careCases.filter(care =>
+  care.status !== "Closed" && !care.coordinator
+).length > 0 && (
+  <div style={{
+    padding: 16,
+    marginBottom: 24,
+    border: `1px solid ${C.accent}`,
+    borderRadius: 12,
+    background: C.surface
+  }}>
+    <div style={{
+      color: C.accent,
+      fontSize: 12,
+      fontWeight: 700,
+      letterSpacing: 1,
+      marginBottom: 10
+    }}>
+      NEEDS ASSIGNMENT — {careCases.filter(care =>
+        care.status !== "Closed" && !care.coordinator
+      ).length}
+    </div>
+
+    {careCases
+      .filter(care => care.status !== "Closed" && !care.coordinator)
+      .map(care => (
+        <div
+          key={care.id}
+          onClick={() => setSelectedCareId(care.id)}
+          style={{
+            cursor: "pointer",
+            padding: "8px 0"
+          }}
+        >
+          <strong style={{ color: C.cream }}>
+            {care.name}
+          </strong>
+          <span style={{ color: C.muted }}>
+            {" "}· {care.situation}
+          </span>
+        </div>
+      ))}
+  </div>
+)}
     {showCareForm && (
   <div style={{
     padding: 20,
