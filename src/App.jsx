@@ -1835,7 +1835,41 @@ apiSaveCareCases(updatedCareCases);
 {view === "week" && (
   <div style={S.weekWrap}>
     <h2 style={S.weekTitle}>This Week</h2>
+<div style={S.weekSection}>
+  <div style={S.sectionHead}>
+    <span style={S.sectionTitle}>
+      Upcoming Care
+    </span>
+  </div>
 
+  {careCases.filter(care => care.eventDate).length === 0 ? (
+    <p style={S.weekEmpty}>No upcoming care events scheduled.</p>
+  ) : (
+    careCases
+      .filter(care => care.eventDate)
+      .sort((a, b) => a.eventDate.localeCompare(b.eventDate))
+      .map(care => (
+        <div
+          key={care.id}
+          style={S.weekRow}
+          onClick={() => {
+            setSelectedCareId(care.id);
+            setView("pray");
+          }}
+        >
+          <div>
+            <strong>{care.name}</strong>
+            <div style={{ color: C.muted, fontSize: 13 }}>
+              {care.type} — {care.situation}
+            </div>
+          </div>
+          <div style={{ color: C.accent, fontWeight: 700 }}>
+            {care.eventDate}
+          </div>
+        </div>
+      ))
+  )}
+</div>
     <div style={S.weekSection}>
       <div style={S.sectionHead}>
         <span style={S.sectionTitle}>
