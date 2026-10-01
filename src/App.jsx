@@ -2396,14 +2396,19 @@ onClick={() => {
   return followUpDate <= sevenDaysFromNow;
 })
           .sort((a, b) => a.followUp.localeCompare(b.followUp))
-          .map(care => (
-            <div
-              key={care.id}
-              style={{
-                padding: "14px 16px",
-                borderTop: "1px solid rgba(255,255,255,0.08)"
-              }}
-            >
+         .map(care => (
+  <div
+    key={care.id}
+    onClick={() => {
+      setSelectedCareId(care.id);
+      setView("pray");
+    }}
+    style={{
+      padding: "14px 16px",
+      borderTop: "1px solid rgba(255,255,255,0.08)",
+      cursor: "pointer"
+    }}
+  >
               <div style={{ color: C.cream, fontWeight: 600, fontSize: 16 }}>
                 {care.name}
               </div>
