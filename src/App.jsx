@@ -2229,6 +2229,9 @@ apiSaveCareCases(updatedCareCases);
               })
               .map(p => {
                 const bdayFmt = p.birthday ? (() => { const [m, d] = p.birthday.split("-"); const date = new Date(2000, parseInt(m)-1, parseInt(d)); return date.toLocaleDateString("en-US", { month:"short", day:"numeric" }); })() : null;
+                const personCareCases = careCases.filter(care => care.name === p.name);
+const activeCareCases = personCareCases.filter(care => care.status !== "Closed");
+const closedCareCases = personCareCases.filter(care => care.status === "Closed");
                 return (
                 <div
   key={p.id}
