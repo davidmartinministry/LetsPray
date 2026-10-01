@@ -1842,11 +1842,33 @@ apiSaveCareCases(updatedCareCases);
     </span>
   </div>
 
-  {careCases.filter(care => care.eventDate).length === 0 ? (
+{careCases.filter(care => {
+  if (!care.eventDate) return false;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const eventDate = new Date(care.eventDate + "T00:00:00");
+  const sevenDaysFromNow = new Date(today);
+  sevenDaysFromNow.setDate(today.getDate() + 7);
+
+  return eventDate >= today && eventDate <= sevenDaysFromNow;
+}).length === 0 ? (
     <p style={S.weekEmpty}>No upcoming care events scheduled.</p>
   ) : (
     careCases
-      .filter(care => care.eventDate)
+   .filter(care => {
+  if (!care.eventDate) return false;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const eventDate = new Date(care.eventDate + "T00:00:00");
+  const sevenDaysFromNow = new Date(today);
+  sevenDaysFromNow.setDate(today.getDate() + 7);
+
+  return eventDate >= today && eventDate <= sevenDaysFromNow;
+})
       .sort((a, b) => a.eventDate.localeCompare(b.eventDate))
       .map(care => (
         <div
