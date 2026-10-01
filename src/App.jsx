@@ -2249,19 +2249,20 @@ const closedCareCases = personCareCases.filter(care => care.status === "Closed")
                     {/* Text — left aligned below name */}
                     <div style={{ display:"flex", flexDirection:"column", gap:3, flex:1, minWidth:0 }}>
                       <span style={{ fontSize:15, color:C.cream, fontFamily:"'Lora', Georgia, serif" }}>{p.name}</span>
-                      {(() => {
-  const personCare = careCases.find(care => care.name === p.name);
+ {(() => {
+  if (personCareCases.length === 0) {
+    return (
+      <span style={{ fontSize: 12, color: C.muted }}>
+        No care history
+      </span>
+    );
+  }
 
   return (
-    <span style={{
-      fontSize: 12,
-      color: personCare
-        ? (personCare.status === "Closed" ? C.muted : C.accent)
-        : C.muted
-    }}>
-      {personCare
-        ? `${personCare.type} · ${personCare.status || "Active"}`
-        : "No care history"}
+    <span style={{ fontSize: 12, color: activeCareCases.length > 0 ? C.accent : C.muted }}>
+      {activeCareCases.length > 0
+        ? `${activeCareCases.length} active care ${activeCareCases.length === 1 ? "need" : "needs"}`
+        : `${closedCareCases.length} closed care ${closedCareCases.length === 1 ? "need" : "needs"}`}
     </span>
   );
 })()}
