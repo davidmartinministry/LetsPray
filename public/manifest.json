@@ -1,7 +1,7 @@
 {
-  "name": "Let's Pray",
-  "short_name": "Let's Pray",
-  "description": "A prayer roster tool for youth ministry leaders",
+ "name": "Fellowship Care",
+"short_name": "Fellowship Care",
+"description": "A pastoral care tool for Fellowship Church",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#1a1c1e",
