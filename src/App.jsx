@@ -586,6 +586,7 @@ function AppMain({ settings }) {
   const [people, setPeople] = useState([]);
   const [careCases, setCareCases] = useState([]);
   const [selectedCareId, setSelectedCareId] = useState(null);
+  const [editingCare, setEditingCare] = useState(false);
   const [currentUser, setCurrentUser] = useState("");
   const [selectedPersonName, setSelectedPersonName] = useState(null);
   const [updateType, setUpdateType] = useState("Call");
@@ -1218,6 +1219,27 @@ function assignCareToMe(id) {
 
   setCareCases(updatedCareCases);
   apiSaveCareCases(updatedCareCases);
+}
+  function saveCareEdits() {
+  if (!selectedCareId || !careName.trim() || !careSituation.trim()) return;
+
+  const updatedCareCases = careCases.map(care => {
+    if (care.id !== selectedCareId) return care;
+
+    return {
+      ...care,
+      name: careName.trim(),
+      type: careType,
+      situation: careSituation.trim(),
+      coordinator: careCoordinator,
+      followUp: careFollowUp,
+      eventDate: careEventDate
+    };
+  });
+
+  setCareCases(updatedCareCases);
+  apiSaveCareCases(updatedCareCases);
+  setEditingCare(false);
 }
   function closeCareCase(id) {
     if (!window.confirm("Close this care need? The care history will be preserved.")) return;
@@ -2035,8 +2057,136 @@ function assignCareToMe(id) {
               <div style={{ color: C.muted, fontSize: 14 }}>
                 <strong>Status:</strong> {care.status || "Active"}
               </div>
+              <button
+onClick={() => {
+  setCareName(care.name || "");
+  setCareType(care.type || "Illness");
+  setCareSituation(care.situation || "");
+  setCareCoordinator(care.coordinator || "");
+  setCareFollowUp(care.followUp || "");
+  setCareEventDate(care.eventDate || "");
+  setEditingCare(true);
+}}
+  style={{
+    marginTop: 16,
+    background: "transparent",
+    color: C.accent,
+    border: "1px solid rgba(255,255,255,0.18)",
+    borderRadius: 8,
+    padding: "7px 10px",
+    cursor: "pointer",
+    fontWeight: 600
+  }}
+>
+  Edit Care Need
+</button>
             </div>
+{editingCare && (
+  <div style={{
+    padding: 20,
+    border: "1px solid rgba(255,255,255,0.12)",
+    borderRadius: 12,
+    marginBottom: 20
+  }}>
+    <h3 style={{
+      color: C.cream,
+      fontFamily: "'Lora', Georgia, serif",
+      marginTop: 0,
+      marginBottom: 16
+    }}>
+      Edit Care Need
+    </h3>
 
+    <label style={{ display: "block", color: C.muted, fontSize: 13, marginBottom: 6 }}>
+      Name
+    </label>
+    <input
+      type="text"
+      value={careName}
+      onChange={e => setCareName(e.target.value)}
+      style={{ ...S.modalInput, width: "100%", boxSizing: "border-box", marginBottom: 14 }}
+    />
+
+    <label style={{ display: "block", color: C.muted, fontSize: 13, marginBottom: 6 }}>
+      Category
+    </label>
+    <select
+      value={careType}
+      onChange={e => setCareType(e.target.value)}
+      style={{ ...S.modalInput, width: "100%", boxSizing: "border-box", marginBottom: 14 }}
+    >
+      <option value="Illness">Illness</option>
+      <option value="Hospitalization/Surgery">Hospitalization/Surgery</option>
+      <option value="Death/Grief">Death/Grief</option>
+      <option value="Marriage/Divorce">Marriage/Divorce</option>
+      <option value="Job/Financial">Job/Financial</option>
+      <option value="Birth/New Baby">Birth/New Baby</option>
+      <option value="Family Crisis">Family Crisis</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <label style={{ display: "block", color: C.muted, fontSize: 13, marginBottom: 6 }}>
+      Care need
+    </label>
+    <textarea
+      value={careSituation}
+      onChange={e => setCareSituation(e.target.value)}
+      style={{ ...S.modalInput, width: "100%", boxSizing: "border-box", marginBottom: 14 }}
+    />
+
+    <label style={{ display: "block", color: C.muted, fontSize: 13, marginBottom: 6 }}>
+      Coordinator
+    </label>
+    <select
+      value={careCoordinator}
+      onChange={e => setCareCoordinator(e.target.value)}
+      style={{ ...S.modalInput, width: "100%", boxSizing: "border-box", marginBottom: 14 }}
+    >
+      <option value="">Unassigned</option>
+      <option value="David Martin">David Martin</option>
+      <option value="Daniel Ward">Daniel Ward</option>
+    </select>
+
+    <label style={{ display: "block", color: C.muted, fontSize: 13, marginBottom: 6 }}>
+      Event date
+    </label>
+    <input
+      type="date"
+      value={careEventDate}
+      onChange={e => setCareEventDate(e.target.value)}
+      style={{ ...S.modalInput, width: "100%", boxSizing: "border-box", marginBottom: 14 }}
+    />
+
+    <label style={{ display: "block", color: C.muted, fontSize: 13, marginBottom: 6 }}>
+      Next follow-up
+    </label>
+    <input
+      type="date"
+      value={careFollowUp}
+      onChange={e => setCareFollowUp(e.target.value)}
+      style={{ ...S.modalInput, width: "100%", boxSizing: "border-box", marginBottom: 16 }}
+    />
+
+    <button onClick={saveCareEdits}>
+      Save Changes
+    </button>
+
+    <button
+      onClick={() => setEditingCare(false)}
+      style={{
+        marginLeft: 10,
+        background: "transparent",
+        color: C.muted,
+        border: "1px solid rgba(255,255,255,0.18)",
+        borderRadius: 8,
+        padding: "7px 10px",
+        cursor: "pointer"
+      }}
+    >
+      Cancel
+    </button>
+  </div>
+)}
             <h3 style={{
               color: C.cream,
               fontFamily: "'Lora', Georgia, serif",
