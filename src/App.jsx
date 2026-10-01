@@ -1436,7 +1436,7 @@ apiSaveCareCases(updatedCareCases);
         </p>
       </div>
     ) : <div>
-  {careCases.map(care => (
+ {careCases.filter(care => care.status !== "Closed").map(care => (
     <div
       key={care.id}
       onClick={() => setSelectedCareId(care.id)}
