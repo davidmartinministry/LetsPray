@@ -2107,6 +2107,7 @@ apiSaveCareCases(updatedCareCases);
       </div>
 
       {careCases.filter(care => {
+  if (care.status === "Closed") return false;
   if (!care.followUp) return false;
 
   const today = new Date();
@@ -2122,6 +2123,7 @@ apiSaveCareCases(updatedCareCases);
       ) : (
         careCases
   .filter(care => {
+    if (care.status === "Closed") return false;
   if (!care.followUp) return false;
 
   const today = new Date();
