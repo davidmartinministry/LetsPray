@@ -2246,6 +2246,22 @@ apiSaveCareCases(updatedCareCases);
                     {/* Text — left aligned below name */}
                     <div style={{ display:"flex", flexDirection:"column", gap:3, flex:1, minWidth:0 }}>
                       <span style={{ fontSize:15, color:C.cream, fontFamily:"'Lora', Georgia, serif" }}>{p.name}</span>
+                      {(() => {
+  const personCare = careCases.find(care => care.name === p.name);
+
+  return (
+    <span style={{
+      fontSize: 12,
+      color: personCare
+        ? (personCare.status === "Closed" ? C.muted : C.accent)
+        : C.muted
+    }}>
+      {personCare
+        ? `${personCare.type} · ${personCare.status || "Active"}`
+        : "No care history"}
+    </span>
+  );
+})()}
                       <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
                         {p.type === "student" && p.grade && (
                           <span style={{ fontSize:13, color:C.muted, fontWeight:600 }}>{ordinal(p.grade)} Grade</span>
