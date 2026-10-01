@@ -1204,7 +1204,21 @@ by: currentUser || "Unknown"
   setUpdateNote("");
   setUpdateFollowUp("");
 }
+function assignCareToMe(id) {
+  if (!currentUser) return;
 
+  const updatedCareCases = careCases.map(care => {
+    if (care.id !== id) return care;
+
+    return {
+      ...care,
+      coordinator: currentUser
+    };
+  });
+
+  setCareCases(updatedCareCases);
+  apiSaveCareCases(updatedCareCases);
+}
   function closeCareCase(id) {
     if (!window.confirm("Close this care need? The care history will be preserved.")) return;
   const updatedCareCases = careCases.map(care => {
@@ -1996,7 +2010,23 @@ by: currentUser || "Unknown"
               <div style={{ color: C.muted, fontSize: 14, marginBottom: 6 }}>
                 <strong>Coordinator:</strong> {care.coordinator || "Unassigned"}
               </div>
-
+{care.status !== "Closed" && !care.coordinator && currentUser && (
+  <button
+    onClick={() => assignCareToMe(care.id)}
+    style={{
+      background: "transparent",
+      color: C.accent,
+      border: "1px solid rgba(255,255,255,0.18)",
+      borderRadius: 8,
+      padding: "7px 10px",
+      marginBottom: 10,
+      cursor: "pointer",
+      fontWeight: 600
+    }}
+  >
+    Assign to Me
+  </button>
+)}
              {care.status !== "Closed" && (
   <div style={{ color: C.muted, fontSize: 14, marginBottom: 6 }}>
     <strong>Next follow-up:</strong> {care.followUp || "Not scheduled"}
