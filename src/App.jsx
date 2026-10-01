@@ -2425,9 +2425,35 @@ onClick={() => {
                 <strong>Coordinator:</strong> {care.coordinator || "Unassigned"}
               </div>
 
-              <div style={{ color: C.muted, fontSize: 13, marginTop: 3 }}>
-                <strong>Follow up:</strong> {care.followUp}
-              </div>
+            <div style={{ color: C.muted, fontSize: 13, marginTop: 3 }}>
+  <strong>Follow up:</strong> {care.followUp}
+  {(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const followUpDate = new Date(care.followUp + "T00:00:00");
+
+    const label =
+      followUpDate < today
+        ? "OVERDUE"
+        : followUpDate.getTime() === today.getTime()
+        ? "TODAY"
+        : "UPCOMING";
+
+    return (
+      <span
+        style={{
+          marginLeft: 8,
+          color: label === "OVERDUE" ? "#d97777" : C.accent,
+          fontWeight: 700,
+          fontSize: 11
+        }}
+      >
+        {label}
+      </span>
+    );
+  })()}
+</div>
             </div>
           ))
       )}
