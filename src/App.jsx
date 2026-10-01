@@ -1425,6 +1425,50 @@ apiSaveCareCases(updatedCareCases);
     <option value="Daniel Ward">Daniel Ward</option>
   </select>
 </div>
+    {currentUser && careCases.filter(care =>
+  care.status !== "Closed" &&
+  care.coordinator === currentUser
+).length > 0 && (
+  <div style={{
+    padding: 16,
+    marginBottom: 24,
+    border: `1px solid ${C.accent}`,
+    borderRadius: 12,
+    background: C.surface
+  }}>
+    <div style={{
+      color: C.accent,
+      fontSize: 12,
+      fontWeight: 700,
+      letterSpacing: 1,
+      marginBottom: 12
+    }}>
+      MY ASSIGNMENTS
+    </div>
+
+    {careCases
+      .filter(care =>
+        care.status !== "Closed" &&
+        care.coordinator === currentUser
+      )
+      .map(care => (
+        <div
+          key={care.id}
+          onClick={() => setSelectedCareId(care.id)}
+          style={{
+            color: C.cream,
+            cursor: "pointer",
+            marginBottom: 8
+          }}
+        >
+          <strong>{care.name}</strong>
+          <span style={{ color: C.muted }}>
+            {" · "}{care.situation}
+          </span>
+        </div>
+      ))}
+  </div>
+)}
     <button
   onClick={() => setShowCareForm(true)}
   style={{
