@@ -586,6 +586,7 @@ function AppMain({ settings }) {
   const [people, setPeople] = useState([]);
   const [careCases, setCareCases] = useState([]);
   const [selectedCareId, setSelectedCareId] = useState(null);
+  const [currentUser, setCurrentUser] = useState("");
   const [selectedPersonName, setSelectedPersonName] = useState(null);
   const [updateType, setUpdateType] = useState("Call");
 const [updateNote, setUpdateNote] = useState("");
@@ -1394,6 +1395,36 @@ apiSaveCareCases(updatedCareCases);
     <p style={{ color: C.muted, marginTop: 0, marginBottom: 24 }}>
       People currently needing care and follow-up.
     </p>
+  <div style={{ marginBottom: 24 }}>
+  <label style={{
+    display: "block",
+    color: C.muted,
+    fontSize: 12,
+    fontWeight: 700,
+    marginBottom: 6
+  }}>
+    VIEWING AS
+  </label>
+
+  <select
+    value={currentUser}
+    onChange={e => setCurrentUser(e.target.value)}
+    style={{
+      background: C.surface,
+      color: C.cream,
+      border: "1px solid rgba(255,255,255,0.12)",
+      borderRadius: 8,
+      padding: "10px 12px",
+      fontSize: 14,
+      width: "100%",
+      maxWidth: 300
+    }}
+  >
+    <option value="">Select your name</option>
+    <option value="David Martin">David Martin</option>
+    <option value="Daniel Ward">Daniel Ward</option>
+  </select>
+</div>
     <button
   onClick={() => setShowCareForm(true)}
   style={{
