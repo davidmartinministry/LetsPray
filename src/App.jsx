@@ -1786,6 +1786,7 @@ apiSaveCareCases(updatedCareCases);
 
   return (
     <>
+      {selectedCare?.status !== "Closed" && (
       <div style={{
         padding: 20,
         border: "1px solid rgba(255,255,255,0.12)",
@@ -1837,7 +1838,7 @@ apiSaveCareCases(updatedCareCases);
   Close Care Need
 </button>
       </div>
-
+)}
       {history.length === 0 ? (
         <div style={{
           padding: 20,
