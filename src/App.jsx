@@ -2048,6 +2048,9 @@ apiSaveCareCases(updatedCareCases);
           style={{ width: "100%", padding: 10, marginBottom: 10 }}
         />
 
+        <label style={{ display: "block", color: C.muted, fontSize: 12, fontWeight: 700, marginBottom: 6 }}>
+  NEXT FOLLOW-UP
+</label>
         <input
           type="date"
           value={updateFollowUp}
