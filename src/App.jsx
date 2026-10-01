@@ -1321,7 +1321,7 @@ function assignCareToMe(id) {
         </div>
       )}
       {/* — PERSON DETAIL — */}
-{view === "roster" && selectedPersonName && (() => {
+{view === "people" && selectedPersonName && (() => {
   const personCases = careCases.filter(care => care.name === selectedPersonName);
   const activeCases = personCases.filter(care => care.status !== "Closed");
   const closedCases = personCases.filter(care => care.status === "Closed");
