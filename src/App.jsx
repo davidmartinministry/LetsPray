@@ -1723,6 +1723,22 @@ apiSaveCareCases(updatedCareCases);
             }}>
               {care.name}
             </h2>
+            {care.status === "Closed" && (
+  <div style={{
+    display: "inline-block",
+    padding: "5px 10px",
+    marginBottom: 14,
+    borderRadius: 6,
+    background: "rgba(255,255,255,0.10)",
+    color: C.muted,
+    fontSize: 12,
+    fontWeight: 700,
+    letterSpacing: 1
+  }}>
+    CLOSED
+    {care.closedAt && ` — ${new Date(care.closedAt).toLocaleDateString()}`}
+  </div>
+)}
 
             <div style={{
               color: C.accent,
