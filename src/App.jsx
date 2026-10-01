@@ -1763,10 +1763,11 @@ apiSaveCareCases(updatedCareCases);
                 <strong>Coordinator:</strong> {care.coordinator || "Unassigned"}
               </div>
 
-              <div style={{ color: C.muted, fontSize: 14, marginBottom: 6 }}>
-                <strong>Next follow-up:</strong> {care.followUp || "Not scheduled"}
-              </div>
-
+             {care.status !== "Closed" && (
+  <div style={{ color: C.muted, fontSize: 14, marginBottom: 6 }}>
+    <strong>Next follow-up:</strong> {care.followUp || "Not scheduled"}
+  </div>
+)}
               <div style={{ color: C.muted, fontSize: 14 }}>
                 <strong>Status:</strong> {care.status || "Active"}
               </div>
