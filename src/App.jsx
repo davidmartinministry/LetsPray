@@ -2180,23 +2180,7 @@ apiSaveCareCases(updatedCareCases);
       {/* ─── ROSTER ─── */}
       {view === "roster" && (
         <div style={S.importWrap}>
-          {/* Group filter */}
-          <div style={{ display:"flex", gap:0, marginBottom:12, borderRadius:10, overflow:"hidden", border:`1px solid ${C.border}` }}>
-            {[["all","All"],["ms","MS"],["hs","HS"],["leader","Leaders"]].map(([val, label]) => (
-              <button key={val} onClick={() => setRosterGroup(val)} style={{ flex:1, background: rosterGroup === val ? C.accent : C.surface, border:"none", color: rosterGroup === val ? "#fff" : C.muted, padding:"9px 0", fontSize:13, fontWeight: rosterGroup === val ? 600 : 400, cursor:"pointer", fontFamily:"'Inter', system-ui, sans-serif", transition:"background 0.15s" }}>
-                {label}
-              </button>
-            ))}
-          </div>
-
-          {/* Sort filter */}
-          <div style={{ display:"flex", gap:16, marginBottom:12, justifyContent:"center" }}>
-            {[["name","A–Z"],["grade","Grade"],["birthday","Birthday"]].map(([val, label]) => (
-              <button key={val} onClick={() => setRosterSort(val)} style={{ background:"none", border:"none", borderBottom: rosterSort === val ? `2px solid ${C.accent}` : "2px solid transparent", color: rosterSort === val ? C.cream : C.muted, fontSize:13, fontWeight: rosterSort === val ? 500 : 400, padding:"2px 0", cursor:"pointer", fontFamily:"'Inter', system-ui, sans-serif" }}>
-                {label}
-              </button>
-            ))}
-          </div>
+         
 
           {/* People list */}
           <div style={{ display:"flex", flexDirection:"column", gap:1 }}>
