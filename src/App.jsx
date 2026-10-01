@@ -2214,7 +2214,13 @@ apiSaveCareCases(updatedCareCases);
                 return (
                 <div
   key={p.id}
-  onClick={() => setSelectedCareId(careCases.find(care => care.name === p.name)?.id || null)}
+  onClick={() => {
+  const care = careCases.find(care => care.name === p.name);
+  if (care) {
+    setSelectedCareId(care.id);
+    setView("pray");
+  }
+}}
   style={{ display:"flex", alignItems:"center", padding:"11px 14px", background:C.surface, borderRadius:8, gap:12, cursor:"pointer" }}
 >
                     {/* Photo */}
