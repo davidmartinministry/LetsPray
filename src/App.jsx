@@ -1899,11 +1899,33 @@ apiSaveCareCases(updatedCareCases);
         </span>
       </div>
 
-      {careCases.filter(care => care.followUp).length === 0 ? (
+      {careCases.filter(care => {
+  if (!care.followUp) return false;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const followUpDate = new Date(care.followUp + "T00:00:00");
+  const sevenDaysFromNow = new Date(today);
+  sevenDaysFromNow.setDate(today.getDate() + 7);
+
+  return followUpDate <= sevenDaysFromNow;
+}).length === 0 ? (
         <p style={S.weekEmpty}>No follow-ups scheduled.</p>
       ) : (
         careCases
-          .filter(care => care.followUp)
+  .filter(care => {
+  if (!care.followUp) return false;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const followUpDate = new Date(care.followUp + "T00:00:00");
+  const sevenDaysFromNow = new Date(today);
+  sevenDaysFromNow.setDate(today.getDate() + 7);
+
+  return followUpDate <= sevenDaysFromNow;
+})
           .sort((a, b) => a.followUp.localeCompare(b.followUp))
           .map(care => (
             <div
