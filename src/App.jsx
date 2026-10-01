@@ -1202,6 +1202,22 @@ apiSaveCareCases(updatedCareCases);
   setUpdateFollowUp("");
 }
 
+  function closeCareCase(id) {
+    if (!window.confirm("Close this care need? The care history will be preserved.")) return;
+  const updatedCareCases = careCases.map(care => {
+    if (care.id !== id) return care;
+
+    return {
+      ...care,
+      status: "Closed",
+      closedAt: Date.now()
+    };
+  });
+
+  setCareCases(updatedCareCases);
+  apiSaveCareCases(updatedCareCases);
+}
+
   if (!loaded) {
     return <div style={S.root}><p style={{ color: C.cream, fontFamily: "Lora, Georgia, serif", textAlign: "center", marginTop: 80, fontSize: 20 }}>Loading…</p></div>;
   }
@@ -1790,7 +1806,20 @@ apiSaveCareCases(updatedCareCases);
 
         <button onClick={addCareUpdate}>
           Add Care Update
-        </button>
+        </button><button
+  onClick={() => closeCareCase(selectedCareId)}
+  style={{
+    marginLeft: 10,
+    background: "transparent",
+    color: C.muted,
+    border: "1px solid rgba(255,255,255,0.25)",
+    borderRadius: 8,
+    padding: "10px 14px",
+    cursor: "pointer"
+  }}
+>
+  Close Care Need
+</button>
       </div>
 
       {history.length === 0 ? (
