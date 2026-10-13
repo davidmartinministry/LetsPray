@@ -2649,6 +2649,15 @@ onClick={() => {
       {/* ─── ROSTER ─── */}
      {view === "roster" && !selectedPersonName && (
         <div style={S.importWrap}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+  <h3 style={{ margin: 0, color: C.cream }}>People</h3>
+  <button
+    onClick={() => setView("people")}
+    style={{ background: C.green, color: C.bg, border: "none", borderRadius: 8, padding: "10px 16px", cursor: "pointer", fontWeight: 600 }}
+  >
+    + Add Person
+  </button>
+</div>
          
 
           {/* People list */}
