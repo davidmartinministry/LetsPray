@@ -986,13 +986,33 @@ setCareCases(savedCareCases);
   const [rosterGroup, setRosterGroup] = useState("all"); // all | ms | hs | leader
   const [rosterSort, setRosterSort] = useState("name"); // name | grade | birthday
 
-  function addPerson() {
-    if (!addName.trim()) return;
-    setPeople(prev => [...prev, { id: genId(), name: addName.trim(), type: addType, group: addType === "student" ? addGroup : null, grade: addType === "student" && addGrade ? Number(addGrade) : null, active: true, prayedAt: null, prayerRequests: [], birthday: addBday.trim() || "", updatedAt: Date.now() }]);
-    setAddBday("");
-    setAddName("");
-    setAddGrade("");
-  }
+  const [addPhone, setAddPhone] = useState("");
+const [addEmail, setAddEmail] = useState("");
+function addPerson() {
+  const name = addName.trim();
+  if (!name) return;
+
+  setPeople(prev => [...prev, {
+    id: genId(),
+    name: name,
+    phone: addPhone.trim(),
+    email: addEmail.trim(),
+    type: "person",
+    group: null,
+    grade: null,
+    active: true,
+    birthday: "",
+    createdAt: Date.now(),
+    updatedAt: Date.now()
+  }]);
+
+  setAddName("");
+  setAddPhone("");
+  setAddEmail("");
+  setAddBday("");
+  setAddGrade("");
+  setView("roster");
+}
 
   function cycleGroup(id) {
     setPeople(prev => prev.map(p => {
@@ -2465,30 +2485,66 @@ onClick={() => {
       {view === "people" && (
         <div style={S.peopleWrap}>
           {/* ── Add person form ── */}
-          <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, padding:"14px", display:"flex", flexDirection:"column", gap:8, marginBottom:4 }}>
-            <p style={{ margin:0, fontSize:11, color:C.muted, textTransform:"uppercase", letterSpacing:"0.06em", fontWeight:600 }}>Add Person</p>
-            <input value={addName} onChange={e => setAddName(e.target.value)} onKeyDown={e => e.key === "Enter" && addPerson()} placeholder="Full name" style={{ ...S.addInput, margin:0 }} />
-            <div style={{ display:"flex", gap:8 }}>
-              <select value={addType} onChange={e => { setAddType(e.target.value); }} style={{ ...S.addTypeSelect, flex:1 }}>
-                <option value="student">Student</option>
-                <option value="leader">Leader</option>
-              </select>
-              <select value={addGroup} onChange={e => setAddGroup(e.target.value)} style={{ ...S.addTypeSelect, flex:1 }}>
-                <option value="hs">HS</option>
-                <option value="ms">MS</option>
-              </select>
-              {addType === "student" && (
-                <select value={addGrade} onChange={e => { const g = e.target.value; setAddGrade(g); if (g) setAddGroup(Number(g) >= 9 ? "hs" : "ms"); }} style={{ ...S.addTypeSelect, flex:1 }}>
-                  <option value="">Grade</option>
-                  {[5,6,7,8,9,10,11,12].map(g => <option key={g} value={g}>{g}</option>)}
-                </select>
-              )}
-            </div>
-            <div style={{ display:"flex", gap:8 }}>
-              <input value={addBday} onChange={e => setAddBday(e.target.value)} placeholder="Birthday MM-DD (optional)" style={{ ...S.addInput, flex:1, margin:0, fontSize:13 }} />
-              <button onClick={addPerson} style={{ ...S.addPersonBtn, width:44, height:44 }}><Plus size={18} /></button>
-            </div>
-          </div>
+         <div style={{
+  background: C.surface,
+  border: `1px solid ${C.border}`,
+  borderRadius: 14,
+  padding: "16px",
+  display: "flex",
+  flexDirection: "column",
+  gap: 10,
+  marginBottom: 16
+}}>
+  <p style={{
+    margin: 0,
+    fontSize: 13,
+    color: C.muted,
+    textTransform: "uppercase",
+    letterSpacing: "0.06em",
+    fontWeight: 600
+  }}>
+    Add Person
+  </p>
+
+  <input
+    value={addName}
+    onChange={e => setAddName(e.target.value)}
+    placeholder="Full name"
+    style={S.addInput}
+  />
+
+  <input
+    type="tel"
+    value={addPhone}
+    onChange={e => setAddPhone(e.target.value)}
+    placeholder="Phone number (optional)"
+    style={S.addInput}
+  />
+
+  <input
+    type="email"
+    value={addEmail}
+    onChange={e => setAddEmail(e.target.value)}
+    placeholder="Email address (optional)"
+    style={S.addInput}
+  />
+
+  <button
+    onClick={addPerson}
+    disabled={!addName.trim()}
+    style={{
+      background: C.green,
+      color: C.bg,
+      border: "none",
+      borderRadius: 8,
+      padding: "12px",
+      fontWeight: 600,
+      cursor: "pointer"
+    }}
+  >
+    Save Person
+  </button>
+</div>
 
           <div style={S.statRow}>
             {[[`${activePeople.length}`, "total"], [`${activePeople.filter(p => p.group === "hs").length}`, "HS"], [`${activePeople.filter(p => p.group === "ms").length}`, "MS"], [`${prayedCount}`, "prayed ✓"]].map(([n, l]) => (
