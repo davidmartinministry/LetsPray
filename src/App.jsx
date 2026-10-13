@@ -589,6 +589,7 @@ function AppMain({ settings }) {
   const [editingCare, setEditingCare] = useState(false);
   const [currentUser, setCurrentUser] = useState("");
   const [selectedPersonName, setSelectedPersonName] = useState(null);
+  const [showAddPerson, setShowAddPerson] = useState(false);
   const [updateType, setUpdateType] = useState("Call");
 const [updateNote, setUpdateNote] = useState("");
 const [updateFollowUp, setUpdateFollowUp] = useState("");
@@ -2708,13 +2709,81 @@ onClick={() => {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
   <h3 style={{ margin: 0, color: C.cream }}>People</h3>
   <button
-    onClick={() => setView("people")}
+    onClick={() => setShowAddPerson(true)}
     style={{ background: C.green, color: C.bg, border: "none", borderRadius: 8, padding: "10px 16px", cursor: "pointer", fontWeight: 600 }}
   >
     + Add Person
   </button>
 </div>
-         
+      {showAddPerson && (
+  <div style={{
+    background: C.surface,
+    border: `1px solid ${C.border}`,
+    borderRadius: 14,
+    padding: 16,
+    display: "flex",
+    flexDirection: "column",
+    gap: 10,
+    marginBottom: 16
+  }}>
+    <p style={{ margin: 0, color: C.cream, fontWeight: 600 }}>
+      Add New Person
+    </p>
+
+    <input
+      value={addName}
+      onChange={e => setAddName(e.target.value)}
+      placeholder="Full name"
+      style={S.addInput}
+    />
+
+    <input
+      type="tel"
+      value={addPhone}
+      onChange={e => setAddPhone(e.target.value)}
+      placeholder="Phone number (optional)"
+      style={S.addInput}
+    />
+
+    <input
+      type="email"
+      value={addEmail}
+      onChange={e => setAddEmail(e.target.value)}
+      placeholder="Email address (optional)"
+      style={S.addInput}
+    />
+
+    <div style={{ display: "flex", gap: 8 }}>
+      <button
+        onClick={() => setShowAddPerson(false)}
+        style={{ flex: 1, padding: 12, borderRadius: 8, cursor: "pointer" }}
+      >
+        Cancel
+      </button>
+
+      <button
+        onClick={() => {
+          if (!addName.trim()) return;
+          addPerson();
+          setShowAddPerson(false);
+        }}
+        disabled={!addName.trim()}
+        style={{
+          flex: 1,
+          padding: 12,
+          border: "none",
+          borderRadius: 8,
+          background: C.green,
+          color: C.bg,
+          fontWeight: 600,
+          cursor: "pointer"
+        }}
+      >
+        Save Person
+      </button>
+    </div>
+  </div>
+)}   
 
           {/* People list */}
           <div style={{ display:"flex", flexDirection:"column", gap:1 }}>
